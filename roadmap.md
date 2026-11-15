@@ -9,3 +9,6 @@
 - [x] Rebuild the story as an animated-episode experience with minimal subtitles instead of text boxes.
 - [x] Add a footer link labelled “Kinder Garden” to https://kindergarden-nasa.vercel.app.
 - [x] Verify episode playback, scene controls, mission logs, quiz, footer link, and preview rendering.
+- [ ] Change the Kinder Garden footer destination to https://kinder-garden-eight.vercel.app.
+- [ ] Diagnose and reduce playback and interaction stutter without changing the cinematic design.
+- [ ] Verify the new link, smooth playback, scene controls, and preview build.
