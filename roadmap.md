@@ -4,4 +4,4 @@
 - [x] Add precise wording and visible NASA citations to the story.
 - [x] Test Start Episode, all three artifact scans, and the complete quiz in the preview; fix any failures.
 - [x] Check the final preview build and report verified results.
-- [ ] Sweep every opening, dialogue, artifact-card, and quiz mention of the four NASA-checked facts for consistent wording and citations.
+- [x] Sweep every opening, dialogue, artifact-card, and quiz mention of the four NASA-checked facts for consistent wording and citations.
