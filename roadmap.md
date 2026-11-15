@@ -7,9 +7,8 @@
 - [x] Sweep every opening, dialogue, artifact-card, and quiz mention of the four NASA-checked facts for consistent wording and citations.
 - [x] Create realistic 3D cinematic scenes for the opening, Moon, Mars, and deep space.
 - [x] Rebuild the story as an animated-episode experience with minimal subtitles instead of text boxes.
-- [x] Add a footer link labelled “Kinder Garden” to https://kindergarden-nasa.vercel.app.
 - [x] Verify episode playback, scene controls, mission logs, quiz, footer link, and preview rendering.
-- [ ] Change the Kinder Garden footer destination to https://kinder-garden-eight.vercel.app.
-- [ ] Diagnose and reduce playback and interaction stutter without changing the cinematic design.
-- [ ] Make the phone episode view fit the screen without feeling zoomed in.
-- [ ] Verify the new link, smooth playback, scene controls, phone fit, and preview build.
+- [x] Change the Kinder Garden footer destination to https://kinder-garden-eight.vercel.app.
+- [x] Diagnose and reduce playback and interaction stutter without changing the cinematic design.
+- [x] Make the phone episode view fit the screen without feeling zoomed in.
+- [x] Verify the new link, smooth playback, scene controls, phone fit, and preview build.
