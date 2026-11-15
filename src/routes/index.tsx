@@ -47,7 +47,7 @@ const ACTS: Act[] = [
   },
   {
     id: "mars", act: "Act II", title: "The Red Planet", subtitle: "Rovers That Never Came Home", tone: "text-mars",
-    nobita: "Aw, look at little Spirit and Opportunity... They worked so hard until dust storms tucked them in. Do machines feel lonely, Doraemon?",
+    nobita: "Aw, look at little Spirit and Opportunity... They worked for years, far longer than planned! Do machines feel lonely, Doraemon?",
     doraemon: "They aren't lonely, Nobita! Their tire tracks are etched into Mars forever — monuments of human curiosity reaching across the stars!",
     status: "SLEEPING IN THE DUST", online: false,
     artifacts: [
