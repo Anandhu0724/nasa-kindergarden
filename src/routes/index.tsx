@@ -486,7 +486,7 @@ export function Index() {
             <p className="subtitle-text mt-1 text-sm text-foreground/80">{scene.subtitle}</p>
           </section>
 
-          <div className="absolute inset-x-0 bottom-32 z-20 flex justify-center px-5 md:bottom-36">
+          <div className="absolute inset-x-0 bottom-44 z-20 flex justify-center px-5 md:bottom-36">
             <div key={`${scene.id}-${line.at}`} className="subtitle-reveal max-w-4xl text-center">
               <p className="font-sci text-[10px] font-bold tracking-[0.3em] text-accent">{line.speaker.toUpperCase()}</p>
               <p className="subtitle-text mt-2 text-xl font-bold leading-snug md:text-3xl">“{line.text}”</p>
