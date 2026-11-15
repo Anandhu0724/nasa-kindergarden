@@ -11,4 +11,5 @@
 - [x] Verify episode playback, scene controls, mission logs, quiz, footer link, and preview rendering.
 - [ ] Change the Kinder Garden footer destination to https://kinder-garden-eight.vercel.app.
 - [ ] Diagnose and reduce playback and interaction stutter without changing the cinematic design.
-- [ ] Verify the new link, smooth playback, scene controls, and preview build.
+- [ ] Make the phone episode view fit the screen without feeling zoomed in.
+- [ ] Verify the new link, smooth playback, scene controls, phone fit, and preview build.
