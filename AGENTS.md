@@ -30,3 +30,4 @@ use the editor.
 <!-- LOVABLE:END -->
 
 - Episode voice-over uses pre-recorded CDN audio aligned to the subtitle timeline; pause, seek, and chapter changes synchronize the same audio element to avoid live-generation latency.
+- Background music uses a separate persistent CDN audio element synchronized to the overall episode timeline so chapter changes do not restart the track and narration controls remain independent.
