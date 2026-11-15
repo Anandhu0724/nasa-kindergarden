@@ -77,6 +77,9 @@ type Scene = {
   artifacts: Artifact[];
 };
 
+const LOVABLE_ASSET_HOST = "https://nasa-kindergarden.lovable.app";
+const assetUrl = (url: string) => `${LOVABLE_ASSET_HOST}${url}`;
+
 const SCENES: Scene[] = [
   {
     id: "journey",
@@ -86,8 +89,8 @@ const SCENES: Scene[] = [
     subtitle: "A Doraemon Space Odyssey",
     status: "TIME-SPACE POD 01 · DEPARTING EARTH",
     tone: "text-primary",
-    video: solarVideo.url,
-    audio: departureVoice.url,
+    video: assetUrl(solarVideo.url),
+    audio: assetUrl(departureVoice.url),
     poster: solarPoster,
     duration: 14000,
     lines: [
@@ -121,8 +124,8 @@ const SCENES: Scene[] = [
     subtitle: "Humanity's First Footprint",
     status: "DORMANT · ETERNAL MISSION",
     tone: "text-moon",
-    video: moonVideo.url,
-    audio: moonVoice.url,
+    video: assetUrl(moonVideo.url),
+    audio: assetUrl(moonVoice.url),
     poster: moonPoster,
     duration: 16000,
     lines: [
@@ -175,8 +178,8 @@ const SCENES: Scene[] = [
     subtitle: "Rovers That Never Came Home",
     status: "SLEEPING IN THE DUST",
     tone: "text-mars",
-    video: marsVideo.url,
-    audio: marsVoice.url,
+    video: assetUrl(marsVideo.url),
+    audio: assetUrl(marsVoice.url),
     poster: marsPoster,
     duration: 16000,
     lines: [
@@ -232,8 +235,8 @@ const SCENES: Scene[] = [
     subtitle: "The Golden Record in the Endless Void",
     status: "INTERSTELLAR · STILL TRANSMITTING",
     tone: "text-gold",
-    video: voyagerVideo.url,
-    audio: voyagerVoice.url,
+    video: assetUrl(voyagerVideo.url),
+    audio: assetUrl(voyagerVoice.url),
     poster: voyagerPoster,
     duration: 19000,
     lines: [
@@ -503,7 +506,7 @@ export function Index() {
       className="relative isolate h-[100svh] overflow-hidden bg-background text-foreground"
     >
       <audio ref={audioRef} src={scene.audio} muted={muted} preload="auto" aria-label="Episode voice-over" onError={() => setAudioError(true)} />
-      <audio ref={musicRef} src={backgroundMusic.url} loop preload="auto" aria-label="Episode background music" />
+      <audio ref={musicRef} src={assetUrl(backgroundMusic.url)} loop preload="auto" aria-label="Episode background music" />
       <div className="absolute inset-0 overflow-hidden">
         <video
           key={scene.id}
