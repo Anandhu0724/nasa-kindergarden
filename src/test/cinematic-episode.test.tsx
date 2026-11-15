@@ -24,8 +24,6 @@ describe("Cinematic episode", () => {
   });
 
   it("starts playback and moves to the Moon scene with the next control", () => {
-    vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
-    vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
     render(<Index />);
 
     fireEvent.click(screen.getByRole("button", { name: "Watch episode" }));
