@@ -12,3 +12,5 @@
 - [x] Diagnose and reduce playback and interaction stutter without changing the cinematic design.
 - [x] Make the phone episode view fit the screen without feeling zoomed in.
 - [x] Verify the new link, smooth playback, scene controls, phone fit, and preview build.
+- [x] Record English voice-over aligned with all four scenes and add a mute control.
+- [x] Verify voice-over playback, pause, seek, chapter changes, and phone controls.

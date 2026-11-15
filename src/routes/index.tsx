@@ -10,6 +10,8 @@ import {
   Play,
   RotateCcw,
   Rocket,
+  Volume2,
+  VolumeX,
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -22,6 +24,11 @@ import solarVideo from "@/assets/cinematic-solar-system.mp4.asset.json";
 import moonVideo from "@/assets/cinematic-moon.mp4.asset.json";
 import marsVideo from "@/assets/cinematic-mars.mp4.asset.json";
 import voyagerVideo from "@/assets/cinematic-voyager.mp4.asset.json";
+import departureVoice from "@/assets/voice-departure.mp3.asset.json";
+import moonVoice from "@/assets/voice-moon.mp3.asset.json";
+import marsVoice from "@/assets/voice-mars.mp3.asset.json";
+import voyagerVoice from "@/assets/voice-voyager.mp3.asset.json";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -62,6 +69,7 @@ type Scene = {
   status: string;
   tone: string;
   video: string;
+  audio: string;
   poster: string;
   duration: number;
   lines: Subtitle[];
@@ -78,6 +86,7 @@ const SCENES: Scene[] = [
     status: "TIME-SPACE POD 01 · DEPARTING EARTH",
     tone: "text-primary",
     video: solarVideo.url,
+    audio: departureVoice.url,
     poster: solarPoster,
     duration: 14000,
     lines: [
@@ -112,6 +121,7 @@ const SCENES: Scene[] = [
     status: "DORMANT · ETERNAL MISSION",
     tone: "text-moon",
     video: moonVideo.url,
+    audio: moonVoice.url,
     poster: moonPoster,
     duration: 16000,
     lines: [
@@ -165,6 +175,7 @@ const SCENES: Scene[] = [
     status: "SLEEPING IN THE DUST",
     tone: "text-mars",
     video: marsVideo.url,
+    audio: marsVoice.url,
     poster: marsPoster,
     duration: 16000,
     lines: [
@@ -221,6 +232,7 @@ const SCENES: Scene[] = [
     status: "INTERSTELLAR · STILL TRANSMITTING",
     tone: "text-gold",
     video: voyagerVideo.url,
+    audio: voyagerVoice.url,
     poster: voyagerPoster,
     duration: 19000,
     lines: [
@@ -301,6 +313,8 @@ function KinderGardenFooter() {
 export function Index() {
   const [started, setStarted] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const [muted, setMuted] = useState(false);
+  const [audioError, setAudioError] = useState(false);
   const [sceneIndex, setSceneIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [logOpen, setLogOpen] = useState(false);
@@ -309,6 +323,7 @@ export function Index() {
   const [quizStep, setQuizStep] = useState(0);
   const [picks, setPicks] = useState<(number | null)[]>(QUIZ.map(() => null));
   const videoRef = useRef<HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const frameRef = useRef<HTMLElement>(null);
   const pointerFrameRef = useRef<number | null>(null);
   const pointerPositionRef = useRef({ x: 0, y: 0, width: 1, height: 1 });
@@ -349,6 +364,26 @@ export function Index() {
     }
   }, [started, playing, sceneIndex, logOpen, quizOpen, showEnd]);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const time = progress * scene.duration / 1000;
+    if (Number.isFinite(audio.duration) && Math.abs(audio.currentTime - time) > 0.4) {
+      audio.currentTime = Math.min(time, audio.duration);
+    }
+    const active = started && playing && !logOpen && !quizOpen && !showEnd;
+    if (active && audio.paused) {
+      void audio.play().then(() => setAudioError(false)).catch(() => setAudioError(true));
+    } else if (!active) {
+      audio.pause();
+    }
+  }, [started, playing, sceneIndex, progress, scene.duration, logOpen, quizOpen, showEnd]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    return () => audio?.pause();
+  }, []);
+
   function goToScene(index: number) {
     setStarted(true);
     setSceneIndex(index);
@@ -360,6 +395,11 @@ export function Index() {
   }
 
   function startEpisode() {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.currentTime = 0;
+      void audio.play().then(() => setAudioError(false)).catch(() => setAudioError(true));
+    }
     setStarted(true);
     setSceneIndex(0);
     setProgress(0);
@@ -434,6 +474,7 @@ export function Index() {
       onPointerLeave={handlePointerLeave}
       className="relative isolate h-[100svh] overflow-hidden bg-background text-foreground"
     >
+      <audio ref={audioRef} src={scene.audio} muted={muted} preload="auto" aria-label="Episode voice-over" onError={() => setAudioError(true)} />
       <div className="absolute inset-0 overflow-hidden">
         <video
           key={scene.id}
@@ -476,6 +517,22 @@ export function Index() {
           <span className="hidden sm:inline">INTO THE REMNANTS</span>
         </button>
         <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => {
+              setMuted((current) => !current);
+              if (audioError && started) {
+                void audioRef.current?.play().then(() => setAudioError(false)).catch(() => setAudioError(true));
+              }
+            }}
+            aria-label={muted ? "Unmute voice-over" : "Mute voice-over"}
+            aria-pressed={muted}
+            title={muted ? "Unmute voice-over" : "Mute voice-over"}
+            className="size-10 shrink-0 rounded-full bg-background/40"
+          >
+            {muted ? <VolumeX aria-hidden="true" /> : <Volume2 aria-hidden="true" />}
+          </Button>
           {started && (
             <button
               onClick={() => setLogOpen(true)}
@@ -493,6 +550,9 @@ export function Index() {
           </button>
         </div>
       </header>
+      {audioError && started && (
+        <p role="status" className="absolute inset-x-5 top-20 z-30 text-center text-xs text-accent">Voice-over couldn’t play. Tap the speaker to try again.</p>
+      )}
 
       {!started ? (
         <section className="relative z-20 flex h-full items-center justify-center px-5 pb-16 text-center">
