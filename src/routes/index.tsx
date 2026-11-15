@@ -123,7 +123,7 @@ function ActSection({ act }: { act: Act }) {
 
 function Quiz() {
   const [picks, setPicks] = useState<(number | null)[]>(QUIZ.map(() => null));
-  const score = picks.filter((p, i) => p === QUIZ[i].c).length;
+  const score = picks.filter((p, i) => p === QUIZ[i]?.c).length;
   const done = picks.every((p) => p !== null);
   return (
     <section id="quiz" className="mx-auto max-w-3xl px-5 py-24">
