@@ -28,6 +28,7 @@ import departureVoice from "@/assets/voice-departure.mp3.asset.json";
 import moonVoice from "@/assets/voice-moon.mp3.asset.json";
 import marsVoice from "@/assets/voice-mars.mp3.asset.json";
 import voyagerVoice from "@/assets/voice-voyager.mp3.asset.json";
+import backgroundMusic from "@/assets/space-background-music.mp3.asset.json";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
@@ -324,6 +325,7 @@ export function Index() {
   const [picks, setPicks] = useState<(number | null)[]>(QUIZ.map(() => null));
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const musicRef = useRef<HTMLAudioElement>(null);
   const frameRef = useRef<HTMLElement>(null);
   const pointerFrameRef = useRef<number | null>(null);
   const pointerPositionRef = useRef({ x: 0, y: 0, width: 1, height: 1 });
@@ -381,8 +383,28 @@ export function Index() {
 
   useEffect(() => {
     const audio = audioRef.current;
-    return () => audio?.pause();
+    const music = musicRef.current;
+    return () => {
+      audio?.pause();
+      music?.pause();
+    };
   }, []);
+
+  useEffect(() => {
+    const music = musicRef.current;
+    if (!music) return;
+    music.volume = 0.12;
+    const elapsed = (SCENES.slice(0, sceneIndex).reduce((total, item) => total + item.duration, 0) + progress * scene.duration) / 1000;
+    if (Number.isFinite(music.duration) && music.duration > 0) {
+      const position = elapsed % music.duration;
+      if (Math.abs(music.currentTime - position) > 0.5) music.currentTime = position;
+    }
+    if (started && playing && !logOpen && !quizOpen && !showEnd) {
+      if (music.paused) void music.play().catch(() => undefined);
+    } else {
+      music.pause();
+    }
+  }, [started, playing, sceneIndex, progress, scene.duration, logOpen, quizOpen, showEnd]);
 
   function goToScene(index: number) {
     setStarted(true);
@@ -395,6 +417,12 @@ export function Index() {
   }
 
   function startEpisode() {
+    const music = musicRef.current;
+    if (music) {
+      music.volume = 0.12;
+      music.currentTime = 0;
+      void music.play().catch(() => undefined);
+    }
     const audio = audioRef.current;
     if (audio) {
       audio.currentTime = 0;
@@ -475,6 +503,7 @@ export function Index() {
       className="relative isolate h-[100svh] overflow-hidden bg-background text-foreground"
     >
       <audio ref={audioRef} src={scene.audio} muted={muted} preload="auto" aria-label="Episode voice-over" onError={() => setAudioError(true)} />
+      <audio ref={musicRef} src={backgroundMusic.url} loop preload="auto" aria-label="Episode background music" />
       <div className="absolute inset-0 overflow-hidden">
         <video
           key={scene.id}

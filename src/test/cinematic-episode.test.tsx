@@ -14,6 +14,21 @@ afterEach(() => {
 });
 
 describe("Cinematic episode", () => {
+  it("plays background music at low volume independently of voice-over mute and pauses with the episode", () => {
+    render(<Index />);
+    const music = screen.getByLabelText("Episode background music") as HTMLAudioElement;
+    const play = vi.spyOn(music, "play");
+    const pause = vi.spyOn(music, "pause");
+    fireEvent.click(screen.getByRole("button", { name: "Watch episode" }));
+    expect(play).toHaveBeenCalled();
+    expect(music.volume).toBe(0.12);
+    fireEvent.click(screen.getByRole("button", { name: "Mute voice-over" }));
+    expect(music.muted).toBe(false);
+    pause.mockClear();
+    fireEvent.click(screen.getByRole("button", { name: "Pause episode" }));
+    expect(pause).toHaveBeenCalled();
+  });
+
   it("links the Kinder Garden footer to the requested website", () => {
     render(<Index />);
 
