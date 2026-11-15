@@ -167,8 +167,8 @@ body { font-family: var(--font-sans); }
   --scene-x: 0px;
   --scene-y: 0px;
   transform: translate3d(var(--scene-x), var(--scene-y), 0) scale(1.06);
-  animation: scene-reveal 1.8s cubic-bezier(0.2, 0.75, 0.25, 1) both;
-  transition: transform 1.4s cubic-bezier(0.2, 0.75, 0.25, 1);
+  animation: scene-reveal 1.2s cubic-bezier(0.2, 0.75, 0.25, 1) both;
+  transition: transform 0.8s ease-out;
   will-change: transform;
 }
 

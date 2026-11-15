@@ -280,7 +280,7 @@ const QUIZ = [
   { q: "What does Voyager carry for anyone who finds it?", a: ["A dorayaki", "A golf ball", "The Golden Record"], c: 2 },
 ];
 
-const KINDER_GARDEN_URL = "https://kindergarden-nasa.vercel.app";
+const KINDER_GARDEN_URL = "https://kinder-garden-eight.vercel.app";
 
 function KinderGardenFooter() {
   return (
@@ -310,7 +310,10 @@ export function Index() {
   const [picks, setPicks] = useState<(number | null)[]>(QUIZ.map(() => null));
   const videoRef = useRef<HTMLVideoElement>(null);
   const frameRef = useRef<HTMLElement>(null);
+  const pointerFrameRef = useRef<number | null>(null);
+  const pointerPositionRef = useRef({ x: 0, y: 0, width: 1, height: 1 });
   const scene = SCENES[sceneIndex]!;
+  const upcomingScene = SCENES[sceneIndex + 1];
   const line = (scene.lines.find((item) => progress >= item.at && progress < item.until) ?? scene.lines[scene.lines.length - 1])!;
   const score = picks.filter((pick, index) => pick === QUIZ[index]?.c).length;
   const quizFinished = quizStep >= QUIZ.length;

@@ -19,7 +19,7 @@ describe("Cinematic episode", () => {
 
     expect(screen.getByRole("link", { name: "Kinder Garden" })).toHaveAttribute(
       "href",
-      "https://kindergarden-nasa.vercel.app",
+      "https://kinder-garden-eight.vercel.app",
     );
   });
 
