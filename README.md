@@ -4,7 +4,7 @@ Since the 1960s, NASA has left hardware across the solar system–on the Moon, o
 
 This project was built with [Lovable](https://lovable.dev).
 
-**Live app**: https://nasa-kindergarden.lovable.app
+**Live app**: https://nasa-kindergarden.vercel.app
 
 ## Build with Lovable
 
