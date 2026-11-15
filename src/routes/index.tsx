@@ -19,7 +19,13 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type Artifact = { name: string; year: string; text: string; science: string };
+type Artifact = {
+  name: string;
+  year: string;
+  text: string;
+  science: string;
+  sources?: { label: string; url: string }[];
+};
 type Act = {
   id: string; act: string; title: string; subtitle: string; tone: string;
   nobita: string; doraemon: string; status: string; online: boolean;
@@ -33,7 +39,7 @@ const ACTS: Act[] = [
     doraemon: "Ho ho! That's an Apollo Descent Stage! Leaving heavy gear behind saved weight so astronauts could carry hundreds of kilograms of moon rocks back to Earth!",
     status: "DORMANT / ETERNAL MISSION", online: false,
     artifacts: [
-      { name: "Apollo Descent Stages", year: "1969–1972", text: "The bottom halves of the Lunar Modules stayed behind as launch pads for the trip home.", science: "Made it possible to bring 382 kg of moon rocks to Earth." },
+      { name: "Apollo Descent Stages", year: "1969–1972", text: "The bottom halves of the Lunar Modules stayed behind as launch pads for the trip home.", science: "Across six Apollo Moon landings, astronauts returned 382 kg (842 lb) of rock and soil for study.", sources: [{ label: "Moon Exploration", url: "https://science.nasa.gov/moon/exploration/" }] },
       { name: "Toss Zones", year: "1969–1972", text: "Empty tool bags, TV cameras and spare gear were tossed out to lighten the load for liftoff.", science: "Every kilogram left behind meant another kilogram of samples." },
       { name: "ALSEP Science Stations", year: "1969–1977", text: "Little nuclear-powered labs that kept working for years after the astronauts left.", science: "Measured moonquakes, solar wind and the Moon's thin atmosphere." },
       { name: "Surprise Human Touches", year: "1971", text: "Alan Shepard's golf balls, family photos, plaques and the Fallen Astronaut memorial.", science: "Reminders that explorers are people, too." },
@@ -48,7 +54,7 @@ const ACTS: Act[] = [
       { name: "Heat Shields & Backshells", year: "2012, 2021", text: "Shells that protected Curiosity and Perseverance during their fiery fall through the Martian sky.", science: "Taught engineers how to land heavy rovers safely on Mars." },
       { name: "Viking 1", year: "1976", text: "The first lander to work on Mars, sending home photos of a world we'd only dreamed of.", science: "Ran the first experiments searching for signs of life." },
       { name: "Pathfinder & Sojourner", year: "1997", text: "A lander and the first little rover to roll across another planet.", science: "Snapped panoramas and studied Martian rocks and weather." },
-      { name: "Spirit & Opportunity", year: "2004–2018", text: "Built for 90-day missions, they explored for years. Opportunity drove over 45 km!", science: "Found evidence that liquid water once flowed on Mars." },
+      { name: "Spirit & Opportunity", year: "2004–2018", text: "Built for 90-day missions, they explored for years. Opportunity drove 45.16 km (28.06 miles)!", science: "Found evidence that liquid water once flowed on Mars.", sources: [{ label: "Opportunity Mission", url: "https://science.nasa.gov/mission/mer-opportunity/" }] },
     ],
   },
   {
@@ -57,8 +63,8 @@ const ACTS: Act[] = [
     doraemon: "That's right! Voyager 1 and 2 crossed into interstellar space carrying the Golden Record. It's a message in a bottle cast across the universe!",
     status: "INTERSTELLAR TRAVEL", online: true,
     artifacts: [
-      { name: "Voyager 1 & 2", year: "1977 – today", text: "Twin probes that toured Jupiter, Saturn, Uranus and Neptune, then kept going.", science: "Discovered volcanoes on Io and new rings and moons." },
-      { name: "Crossing the Heliopause", year: "2012, 2018", text: "Both Voyagers left the Sun's bubble — the first human-made objects in interstellar space.", science: "Measured where the Sun's influence ends." },
+      { name: "Voyager 1 & 2", year: "1977 – today", text: "Launched in 1977, the twin probes explored the giant planets; Voyager 2 visited all four.", science: "Voyager 1 discovered active volcanoes on Io in 1979; the mission also revealed new rings and moons.", sources: [{ label: "Io Exploration", url: "https://science.nasa.gov/jupiter/jupiter-moons/io/exploration/" }, { label: "Voyager Mission Overview", url: "https://science.nasa.gov/mission/voyager/mission-overview/" }] },
+      { name: "Crossing the Heliopause", year: "2012 · 2018", text: "Voyager 1 crossed the heliopause on August 25, 2012; Voyager 2 followed on November 5, 2018.", science: "They became the first human-made objects in interstellar space, where they measure particles, plasma waves and magnetic fields.", sources: [{ label: "Voyager Fast Facts", url: "https://science.nasa.gov/mission/voyager/fast-facts/" }, { label: "Interstellar Mission", url: "https://science.nasa.gov/mission/voyager/interstellar-mission/" }] },
       { name: "The Golden Record", year: "1977", text: "A gold-plated disc with greetings in 55 languages, music and sounds of Earth.", science: "A time capsule telling anyone out there who we are." },
     ],
   },
@@ -112,6 +118,15 @@ function ActSection({ act }: { act: Act }) {
                 <h3 className="mt-1 font-dora text-xl font-bold">{a.name}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{a.text}</p>
                 <p className="mt-3 text-sm"><span className="font-bold text-accent">Science: </span>{a.science}</p>
+                {a.sources && (
+                  <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2 border-t border-border pt-3">
+                    {a.sources.map((source) => (
+                      <a key={source.url} href={source.url} target="_blank" rel="noreferrer" className="font-sci text-xs tracking-wide text-primary underline decoration-primary/40 underline-offset-4 transition hover:text-accent">
+                        NASA: {source.label} ↗
+                      </a>
+                    ))}
+                  </div>
+                )}
               </article>
             ))}
           </div>
