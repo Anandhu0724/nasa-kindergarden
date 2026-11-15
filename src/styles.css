@@ -167,8 +167,8 @@ body { font-family: var(--font-sans); }
   --scene-x: 0px;
   --scene-y: 0px;
   transform: translate3d(var(--scene-x), var(--scene-y), 0) scale(1.06);
-  animation: scene-reveal 1.8s cubic-bezier(0.2, 0.75, 0.25, 1) both;
-  transition: transform 1.4s cubic-bezier(0.2, 0.75, 0.25, 1);
+  animation: scene-reveal 1.2s cubic-bezier(0.2, 0.75, 0.25, 1) both;
+  transition: transform 0.8s ease-out;
   will-change: transform;
 }
 
@@ -179,9 +179,8 @@ body { font-family: var(--font-sans); }
 }
 
 .film-grain {
-  opacity: 0.13;
+  opacity: 0.07;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
-  mix-blend-mode: soft-light;
 }
 
 .subtitle-text {
@@ -226,11 +225,23 @@ body { font-family: var(--font-sans); }
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@keyframes mobile-scene-reveal {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .cinematic-media, .title-reveal, .subtitle-reveal { animation: none; transition: none; }
 }
 
 @media (max-width: 640px) {
-  .cinematic-media { object-position: center; }
+  .cinematic-media {
+    object-position: center;
+    transform: none;
+    animation: mobile-scene-reveal 0.6s ease-out both;
+    transition: none;
+    will-change: auto;
+  }
+  .film-grain { display: none; }
+  .glass { backdrop-filter: none; }
 }

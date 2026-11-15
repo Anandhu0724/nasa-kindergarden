@@ -280,7 +280,7 @@ const QUIZ = [
   { q: "What does Voyager carry for anyone who finds it?", a: ["A dorayaki", "A golf ball", "The Golden Record"], c: 2 },
 ];
 
-const KINDER_GARDEN_URL = "https://kindergarden-nasa.vercel.app";
+const KINDER_GARDEN_URL = "https://kinder-garden-eight.vercel.app";
 
 function KinderGardenFooter() {
   return (
@@ -310,7 +310,10 @@ export function Index() {
   const [picks, setPicks] = useState<(number | null)[]>(QUIZ.map(() => null));
   const videoRef = useRef<HTMLVideoElement>(null);
   const frameRef = useRef<HTMLElement>(null);
+  const pointerFrameRef = useRef<number | null>(null);
+  const pointerPositionRef = useRef({ x: 0, y: 0, width: 1, height: 1 });
   const scene = SCENES[sceneIndex]!;
+  const upcomingScene = SCENES[sceneIndex + 1];
   const line = (scene.lines.find((item) => progress >= item.at && progress < item.until) ?? scene.lines[scene.lines.length - 1])!;
   const score = picks.filter((pick, index) => pick === QUIZ[index]?.c).length;
   const quizFinished = quizStep >= QUIZ.length;
@@ -396,11 +399,30 @@ export function Index() {
   }
 
   function handlePointerMove(event: React.PointerEvent<HTMLElement>) {
+    if (event.pointerType !== "mouse") return;
     const bounds = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * -10;
-    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * -8;
-    frameRef.current?.style.setProperty("--scene-x", `${x}px`);
-    frameRef.current?.style.setProperty("--scene-y", `${y}px`);
+    pointerPositionRef.current = {
+      x: event.clientX - bounds.left,
+      y: event.clientY - bounds.top,
+      width: bounds.width,
+      height: bounds.height,
+    };
+    if (pointerFrameRef.current !== null) return;
+    pointerFrameRef.current = window.requestAnimationFrame(() => {
+      const { x, y, width, height } = pointerPositionRef.current;
+      frameRef.current?.style.setProperty("--scene-x", `${(x / width - 0.5) * -10}px`);
+      frameRef.current?.style.setProperty("--scene-y", `${(y / height - 0.5) * -8}px`);
+      pointerFrameRef.current = null;
+    });
+  }
+
+  function handlePointerLeave() {
+    if (pointerFrameRef.current !== null) {
+      window.cancelAnimationFrame(pointerFrameRef.current);
+      pointerFrameRef.current = null;
+    }
+    frameRef.current?.style.setProperty("--scene-x", "0px");
+    frameRef.current?.style.setProperty("--scene-y", "0px");
   }
 
   return (
@@ -409,7 +431,8 @@ export function Index() {
       ref={frameRef}
       data-scene-ready="true"
       onPointerMove={handlePointerMove}
-      className="relative isolate h-[100svh] min-h-[620px] overflow-hidden bg-background text-foreground"
+      onPointerLeave={handlePointerLeave}
+      className="relative isolate h-[100svh] overflow-hidden bg-background text-foreground"
     >
       <div className="absolute inset-0 overflow-hidden">
         <video
@@ -423,8 +446,20 @@ export function Index() {
           playsInline
           preload="auto"
           aria-label={`${scene.title} cinematic scene`}
-          className="cinematic-media size-full object-cover"
+          className="cinematic-media size-full object-contain sm:object-cover"
         />
+        {started && upcomingScene && (
+          <video
+            key={`preload-${upcomingScene.id}`}
+            src={upcomingScene.video}
+            preload="auto"
+            muted
+            playsInline
+            aria-hidden="true"
+            tabIndex={-1}
+            className="pointer-events-none absolute size-px opacity-0"
+          />
+        )}
       </div>
       <div className="vignette pointer-events-none absolute inset-0 z-10" />
       <div className="film-grain pointer-events-none absolute inset-0 z-10" />
