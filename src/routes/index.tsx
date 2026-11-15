@@ -301,7 +301,6 @@ const KINDER_GARDEN_URL = "https://kinder-garden-eight.vercel.app";
 function KinderGardenFooter() {
   return (
     <footer className="absolute inset-x-0 bottom-0 z-40 flex items-center justify-between gap-4 px-5 pb-3 font-sci text-[10px] tracking-wider text-muted-foreground md:px-8">
-      <span>NASA-SOURCED SPACE STORIES</span>
       <a
         href={KINDER_GARDEN_URL}
         target="_blank"
@@ -310,6 +309,7 @@ function KinderGardenFooter() {
       >
         Kinder Garden <ExternalLink className="size-3" aria-hidden="true" />
       </a>
+      <span>NASA-SOURCED SPACE STORIES</span>
     </footer>
   );
 }
