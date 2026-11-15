@@ -13,4 +13,4 @@
 - [x] Make the phone episode view fit the screen without feeling zoomed in.
 - [x] Verify the new link, smooth playback, scene controls, phone fit, and preview build.
 - [x] Record English voice-over aligned with all four scenes and add a mute control.
-- [ ] Verify voice-over playback, pause, seek, chapter changes, and phone controls.
+- [x] Verify voice-over playback, pause, seek, chapter changes, and phone controls.
