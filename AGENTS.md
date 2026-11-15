@@ -28,3 +28,5 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Episode voice-over uses pre-recorded CDN audio aligned to the subtitle timeline; pause, seek, and chapter changes synchronize the same audio element to avoid live-generation latency.
