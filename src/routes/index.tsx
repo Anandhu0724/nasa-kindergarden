@@ -310,10 +310,11 @@ export function Index() {
   const [picks, setPicks] = useState<(number | null)[]>(QUIZ.map(() => null));
   const videoRef = useRef<HTMLVideoElement>(null);
   const frameRef = useRef<HTMLElement>(null);
-  const scene = SCENES[sceneIndex];
-  const line = scene.lines.find((item) => progress >= item.at && progress < item.until) ?? scene.lines[scene.lines.length - 1];
+  const scene = SCENES[sceneIndex]!;
+  const line = (scene.lines.find((item) => progress >= item.at && progress < item.until) ?? scene.lines[scene.lines.length - 1])!;
   const score = picks.filter((pick, index) => pick === QUIZ[index]?.c).length;
   const quizFinished = quizStep >= QUIZ.length;
+  const quizItem = QUIZ[Math.min(quizStep, QUIZ.length - 1)]!;
 
   useEffect(() => {
     if (!started || !playing || logOpen || quizOpen || showEnd) return;
@@ -624,12 +625,12 @@ export function Index() {
             {!quizFinished ? (
               <div className="mt-8">
                 <p className="font-sci text-[10px] text-muted-foreground">QUESTION {quizStep + 1} OF {QUIZ.length}</p>
-                <h3 className="mt-3 text-xl font-bold leading-relaxed">{QUIZ[quizStep].q}</h3>
+                <h3 className="mt-3 text-xl font-bold leading-relaxed">{quizItem.q}</h3>
                 <div className="mt-6 grid gap-3">
-                  {QUIZ[quizStep].a.map((option, optionIndex) => {
+                  {quizItem.a.map((option, optionIndex) => {
                     const picked = picks[quizStep] === optionIndex;
                     const answered = picks[quizStep] !== null;
-                    const correct = optionIndex === QUIZ[quizStep].c;
+                    const correct = optionIndex === quizItem.c;
                     return (
                       <button
                         key={option}
